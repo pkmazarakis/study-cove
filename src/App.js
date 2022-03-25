@@ -10,6 +10,7 @@ import "./App.css";
 import Header from "./Sections/Header/Header";
 import CoveTypography from "./components/CoveTypography";
 import Clock from "react-live-clock";
+import ClassList from "./Sections/StudyList/ClassList";
 
 export default function App() {
   const [width, setWidth] = useState();
@@ -110,7 +111,8 @@ export default function App() {
       >
         <Clock format="h:mm" interval={1000} ticking={true} />
       </CoveTypography>
-      <div
+      <ClassList />
+      {/* <div
         style={{ position: "absolute", left: width, top: height, zIndex: 1000 }}
       >
         <Reward
@@ -136,7 +138,7 @@ export default function App() {
           }}
           type="emoji"
         ></Reward>
-      </div>
+      </div> */}
       <Modal
         open={open}
         onClose={handleClose}
