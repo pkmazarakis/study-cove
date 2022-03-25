@@ -75,7 +75,7 @@ function Header({ handleOpen }) {
 
       {isMobile ? null : (
         <CoveTypography style={{ fontSize: 18, fontWeight: "regular" }}>
-          Hello Platon
+          Hello Youtube Embed
         </CoveTypography>
       )}
     </div>
