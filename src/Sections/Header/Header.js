@@ -48,7 +48,7 @@ function Header({ handleOpen }) {
             startIcon={<CreateRoom />}
             onClick={() => handleOpen()}
           >
-            Change Background
+            Create Room
           </Button>
         )}
 
