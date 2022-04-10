@@ -3,17 +3,17 @@
   "name": "Create React App Sample",
   "icons": [
     {
-      "src": "StudyCoveLogo.png",
+      "src": "SPLogoTransparent.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "StudyCoveLogo.png",
+      "src": "SPLogoTransparent.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "StudyCoveLogo.png",
+      "src": "SPLogoTransparent.png",
       "type": "image/png",
       "sizes": "512x512"
     }
