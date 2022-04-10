@@ -23,52 +23,61 @@ function Header({ handleOpen }) {
         // backgroundColor: "rgba(255, 255, 255, 0.2)",
       }}
     >
-      {isMobile ? null : (
-        <CoveTypography style={{ fontSize: 18, fontWeight: "regular" }}>
-          Study Cove
-        </CoveTypography>
+      {isMobile ? (
+        <IconButton onClick={() => handleOpen()}>
+          <CreateRoom />
+        </IconButton>
+      ) : (
+        <Button
+          style={{
+            marginRight: "16px",
+            color: "#000000",
+            alignItems: "center",
+          }}
+          startIcon={<CreateRoom />}
+          onClick={() => handleOpen()}
+        >
+          Create Room
+        </Button>
       )}
-      <Spacer grow={"1"} />
+
+      {isMobile ? (
+        <IconButton onClick={() => handleOpen()}>
+          <BackgroundPicker />
+        </IconButton>
+      ) : (
+        <Button
+          style={{ color: "#000000", alignItems: "center" }}
+          startIcon={<BackgroundPicker />}
+          onClick={() => handleOpen()}
+        >
+          Change Background
+        </Button>
+      )}
 
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          alignSelf: "center",
+          // alignSelf: "center",
+          position: "absolute",
+          left: 0,
+          right: 0,
+          marginLeft: "auto",
+          marginRight: "auto",
         }}
       >
-        {isMobile ? (
-          <IconButton onClick={() => handleOpen()}>
-            <CreateRoom />
-          </IconButton>
-        ) : (
-          <Button
-            style={{ marginRight: "16px", color: "#000000" }}
-            startIcon={<CreateRoom />}
-            onClick={() => handleOpen()}
-          >
-            Create Room
-          </Button>
-        )}
-
         <img
           src={require("../../assets/StudyCoveLogo.png")}
           width={40}
           height={40}
+          style={{ marginRight: "16px" }}
         />
-        {isMobile ? (
-          <IconButton onClick={() => handleOpen()}>
-            <BackgroundPicker />
-          </IconButton>
-        ) : (
-          <Button
-            style={{ marginLeft: "16px", color: "#000000" }}
-            startIcon={<BackgroundPicker />}
-            onClick={() => handleOpen()}
-          >
-            Change Background
-          </Button>
+        {isMobile ? null : (
+          <CoveTypography style={{ fontSize: 18, fontWeight: "regular" }}>
+            Study Cove
+          </CoveTypography>
         )}
       </div>
       <Spacer grow={"1"} />
