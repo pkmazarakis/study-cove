@@ -101,6 +101,7 @@ function ClassList() {
       style={{
         flexDirection: "column",
         justifyContent: "flex-start",
+        overflow: "scroll",
       }}
     >
       <TextField
