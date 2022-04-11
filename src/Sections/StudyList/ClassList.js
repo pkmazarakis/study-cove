@@ -1,7 +1,18 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import { alpha, styled } from "@mui/material/styles";
+
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Button, Box, TextField, Popover, Menu, MenuItem } from "@mui/material";
+import {
+  Button,
+  Box,
+  TextField,
+  Popover,
+  Menu,
+  MenuItem,
+  Autocomplete,
+} from "@mui/material";
+import AssignmentBuilder from "../../components/AssignmentBuilder";
 
 // fake data generator
 const getItems = (count, description, time, offset = 0) => {
@@ -40,19 +51,24 @@ const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle, time) => ({
   // some basic styles to make the items look a bit nicer
+  display: "flex",
   userSelect: "none",
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
   borderRadius: "12px",
   height: (Number(time) * 2) / 3,
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "white",
+  alignItems: "center",
+  background: isDragging ? "lightblue" : "white",
 
   // styles we need to apply on draggables
   ...draggableStyle,
 });
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
+  backgroundColor: "white",
+  backgroundImage: `linear-gradient(135deg, ${alpha(
+    "#FF5ACD",
+    0.5
+  )} 0%, ${alpha("#FBDA61", 0.5)} 100%)`,
   padding: grid,
   width: "100%",
   borderRadius: 12,
@@ -65,6 +81,11 @@ function ClassList() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [time, setTime] = useState();
   const [description, setDescription] = useState("");
+
+  const handleAddBlock = () => {
+    console.log("HELLO ? ", description);
+    setState([state[0].concat(getItems(1, description, time))]);
+  };
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -95,6 +116,20 @@ function ClassList() {
   const handleClose = () => {
     setMenuOpen(false);
   };
+  // const times = [
+  //   { time: "15 minutes" },
+  //   { time: "30 minutes" },
+  //   { time: "1 hour" },
+  //   { time: "2 hours" },
+  //   { time: "3 hours" },
+  // ];
+  const times = [
+    { time: 15 },
+    { time: 30 },
+    { time: 60 },
+    { time: 120 },
+    { time: 180 },
+  ];
 
   return (
     <div
@@ -102,17 +137,10 @@ function ClassList() {
         flexDirection: "column",
         justifyContent: "flex-start",
         overflow: "scroll",
+        margin: "12px",
+        padding: "12px",
       }}
     >
-      <TextField
-        size="small"
-        label="Description"
-        value={description}
-        onChange={(event) => {
-          setDescription(event.target.value);
-        }}
-        style={{ marginRight: "16px", width: "100%", marginBottom: "16px" }}
-      ></TextField>
       <div
         style={{
           flexDirection: "row",
@@ -120,40 +148,32 @@ function ClassList() {
           display: "flex",
           width: "100%",
           height: 40,
+          marginBottom: "16px",
         }}
       >
         <TextField
-          label="Time allotted"
           size="small"
-          value={time}
+          label="Description"
+          value={description}
           onChange={(event) => {
-            setTime(event.target.value);
+            setDescription(event.target.value);
           }}
-          style={{ marginRight: "16px", width: "50%" }}
+          style={{ marginRight: "16px", width: "70%", marginBottom: "16px" }}
         ></TextField>
-        {/* <Menu
-          id="basic-menu"
-          //   anchorEl={anchorEl}
-          open={menuOpen}
-          onClose={handleClose}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
+        <Autocomplete
+          size="small"
+          id="activityClass"
+          freeSolo
+          defaultValue="1 hour"
+          style={{ width: "30%" }}
+          onChange={(value) => {
+            setTime(value);
           }}
-        >
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
-          <MenuItem onClick={handleClose}>My account</MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
-        </Menu> */}
-        <Button
-          variant="contained"
-          style={{ width: "50%" }}
-          onClick={() => {
-            setState([state[0].concat(getItems(1, description, time))]);
-          }}
-        >
-          Add time
-        </Button>
+          options={times.map((option) => option.time)}
+          renderInput={(params) => <TextField {...params} label="Time" />}
+        />
       </div>
+      <AssignmentBuilder handleAddBlock={handleAddBlock} />
 
       <div style={{ display: "flex", flex: 1, width: "100%" }}>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -186,7 +206,8 @@ function ClassList() {
                             <div
                               style={{
                                 display: "flex",
-                                justifyContent: "space-around",
+                                width: "100%",
+                                justifyContent: "space-between",
                               }}
                             >
                               {item.content}

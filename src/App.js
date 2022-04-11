@@ -11,6 +11,7 @@ import Header from "./Sections/Header/Header";
 import CoveTypography from "./components/CoveTypography";
 import Clock from "react-live-clock";
 import ClassList from "./Sections/StudyList/ClassList";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function App() {
   const [width, setWidth] = useState();
@@ -18,6 +19,8 @@ export default function App() {
   const [open, setOpen] = useState(false);
   const [reward, setReward] = useState();
   const [picture, setPicture] = useState(1);
+  const matches = useMediaQuery("(min-width:1000px)", { noSsr: true });
+
   const images = [
     "https://images.pexels.com/photos/2261166/pexels-photo-2261166.jpeg",
     "https://wallpaperaccess.com/full/1556608.jpg",
@@ -113,12 +116,54 @@ export default function App() {
       onClick={(event) => handleRewardRequest(event)}
     >
       <Header handleOpen={handleOpen} />
-      <CoveTypography
-        style={{ fontSize: 100, fontWeight: "bold", color: "#ffffff" }}
-      >
-        <Clock format="h:mm" interval={1000} ticking={true} />
-      </CoveTypography>
-      <ClassList />
+      {matches ? (
+        <Box sx={{ flexGrow: 1, flex: 1, width: "100%", overflow: "scroll" }}>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <CoveTypography
+                style={{
+                  display: "flex",
+                  fontSize: 100,
+                  fontWeight: "bold",
+                  color: "#ffffff",
+                  alignSelf: "center",
+                  width: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <Clock format="h:mm" interval={1000} ticking={true} />
+              </CoveTypography>
+            </Grid>
+            <Grid item xs={4}>
+              <ClassList />
+            </Grid>
+            <Grid item xs={4}>
+              <ClassList />
+            </Grid>
+          </Grid>
+        </Box>
+      ) : (
+        <div style={{ flexGrow: 1, flex: 1, width: "100%" }}>
+          <CoveTypography
+            style={{
+              display: "flex",
+              fontSize: 100,
+              fontWeight: "bold",
+              color: "#ffffff",
+              alignSelf: "center",
+              width: "100%",
+              justifyContent: "center",
+            }}
+          >
+            <Clock format="h:mm" interval={1000} ticking={true} />
+          </CoveTypography>
+
+          <ClassList />
+
+          <ClassList />
+        </div>
+      )}
+
       {/* <div
         style={{ position: "absolute", left: width, top: height, zIndex: 1000 }}
       >
