@@ -123,7 +123,6 @@ function ClassList() {
 
   const handleSetTime = (holdTime) => {
     setTime(holdTime);
-    setDescription(description + holdTime);
   };
   const handleSetClass = (holdClass) => {
     setAssignmentClass(holdClass);
@@ -133,13 +132,6 @@ function ClassList() {
     setType(holdType);
     setDescription(description + holdType);
   };
-  // const times = [
-  //   { time: "15 minutes" },
-  //   { time: "30 minutes" },
-  //   { time: "1 hour" },
-  //   { time: "2 hours" },
-  //   { time: "3 hours" },
-  // ];
   const times = [
     { time: 15 },
     { time: 30 },
@@ -188,7 +180,15 @@ function ClassList() {
         <Button
           variant="contained"
           size="small"
-          style={{ width: "30%" }}
+          style={{
+            width: "30%",
+            backgroundImage: `linear-gradient(135deg, ${alpha(
+              "#FF5ACD",
+              0.5
+            )} 0%, ${alpha("#FBDA61", 0.5)} 100%)`,
+            backgroundColor: "white",
+            color: "black",
+          }}
           onClick={() => {
             setState([state[0].concat(getItems(1, description, time))]);
 
@@ -235,8 +235,9 @@ function ClassList() {
                               }}
                             >
                               {item.content}
-                              <button
+                              <Button
                                 type="button"
+                                variant="outline"
                                 onClick={() => {
                                   const newState = [...state];
                                   newState[ind].splice(index, 1);
@@ -245,8 +246,8 @@ function ClassList() {
                                   );
                                 }}
                               >
-                                {index}
-                              </button>
+                                delete
+                              </Button>
                             </div>
                           </div>
                         )}

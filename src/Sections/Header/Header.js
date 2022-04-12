@@ -43,7 +43,7 @@ function Header({ handleOpen }) {
                 0.5
               )} 0%, ${alpha("#FBDA61", 0.5)} 100%)`,
               zIndex: 1000,
-              // padding: "8px",
+              backgroundColor: "white",
               paddingLeft: "16px",
               paddingRight: "16px",
               paddingTop: "8px",
@@ -69,6 +69,7 @@ function Header({ handleOpen }) {
                 "#FF5ACD",
                 0.5
               )} 0%, ${alpha("#FBDA61", 0.5)} 100%)`,
+              backgroundColor: "white",
               paddingLeft: "16px",
               paddingRight: "16px",
               paddingTop: "8px",
