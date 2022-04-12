@@ -151,9 +151,6 @@ export default function App() {
           >
             <Clock format="h:mm" interval={1000} ticking={true} />
           </CoveTypography>
-
-          <ClassList />
-
           <ClassList />
         </div>
       )}
