@@ -56,7 +56,6 @@ export default function App() {
     -webkit-tap-highlight-color: transparent;
   `;
   var handleRewardRequest = function (event) {
-    console.log("hello??");
     setWidth(event.clientX);
     setHeight(event.clientY);
     reward?.rewardMe();
@@ -75,14 +74,12 @@ export default function App() {
         families: ["Open Sans"],
       },
     });
-    console.log("done");
   }, []);
 
   const handleClose = () => {
     setOpen(false);
   };
   const handleOpen = () => {
-    console.log("open the gates", open);
     setOpen(true);
   };
 
@@ -119,7 +116,7 @@ export default function App() {
       {matches ? (
         <Box sx={{ flexGrow: 1, flex: 1, width: "100%", overflow: "scroll" }}>
           <Grid container spacing={2}>
-            <Grid item xs={4}>
+            <Grid item xs={5}>
               <CoveTypography
                 style={{
                   display: "flex",
@@ -134,10 +131,7 @@ export default function App() {
                 <Clock format="h:mm" interval={1000} ticking={true} />
               </CoveTypography>
             </Grid>
-            <Grid item xs={4}>
-              <ClassList />
-            </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={7}>
               <ClassList />
             </Grid>
           </Grid>

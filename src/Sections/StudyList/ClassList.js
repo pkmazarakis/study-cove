@@ -49,20 +49,23 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle, time) => ({
-  // some basic styles to make the items look a bit nicer
-  display: "flex",
-  userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-  borderRadius: "12px",
-  height: (Number(time) * 2) / 3,
-  alignItems: "center",
-  background: isDragging ? "lightblue" : "white",
+const getItemStyle = (isDragging, draggableStyle, time) => {
+  console.log("THIS IS THE FUCKING TIME: " + time);
+  return {
+    // some basic styles to make the items look a bit nicer
+    display: "flex",
+    userSelect: "none",
+    padding: grid * 2,
+    margin: `0 0 ${grid}px 0`,
+    borderRadius: "12px",
+    height: time,
+    alignItems: "center",
+    background: isDragging ? "lightblue" : "white",
 
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  };
+};
 const getListStyle = (isDraggingOver) => ({
   backgroundColor: "white",
   backgroundImage: `linear-gradient(135deg, ${alpha(
@@ -77,15 +80,16 @@ const getListStyle = (isDraggingOver) => ({
 });
 
 function ClassList() {
-  const [state, setState] = useState([getItems(1, "Sample", 60)]);
+  const [state, setState] = useState([getItems(1, "Ex: CS 103 Pset 4", 60)]);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [time, setTime] = useState();
+  const [time, setTime] = useState(60);
+  const [type, setType] = useState();
+  const [assignmentClass, setAssignmentClass] = useState();
+
   const [description, setDescription] = useState("");
 
-  const handleAddBlock = () => {
-    console.log("HELLO ? ", description);
-    setState([state[0].concat(getItems(1, description, time))]);
-  };
+  const handleAddBlock = () => {};
+  console.log(state);
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -116,6 +120,19 @@ function ClassList() {
   const handleClose = () => {
     setMenuOpen(false);
   };
+
+  const handleSetTime = (holdTime) => {
+    setTime(holdTime);
+    setDescription(description + holdTime);
+  };
+  const handleSetClass = (holdClass) => {
+    setAssignmentClass(holdClass);
+    setDescription(description + holdClass);
+  };
+  const handleSetType = (holdType) => {
+    setType(holdType);
+    setDescription(description + holdType);
+  };
   // const times = [
   //   { time: "15 minutes" },
   //   { time: "30 minutes" },
@@ -141,6 +158,15 @@ function ClassList() {
         padding: "12px",
       }}
     >
+      <div style={{ marginBottom: "16px" }}>
+        <AssignmentBuilder
+          handleAddBlock={handleAddBlock}
+          handleSetTime={handleSetTime}
+          handleSetClass={handleSetClass}
+          handleSetType={handleSetType}
+        />
+      </div>
+
       <div
         style={{
           flexDirection: "row",
@@ -148,7 +174,6 @@ function ClassList() {
           display: "flex",
           width: "100%",
           height: 40,
-          marginBottom: "16px",
         }}
       >
         <TextField
@@ -160,20 +185,19 @@ function ClassList() {
           }}
           style={{ marginRight: "16px", width: "70%", marginBottom: "16px" }}
         ></TextField>
-        <Autocomplete
+        <Button
+          variant="contained"
           size="small"
-          id="activityClass"
-          freeSolo
-          defaultValue="1 hour"
           style={{ width: "30%" }}
-          onChange={(value) => {
-            setTime(value);
+          onClick={() => {
+            setState([state[0].concat(getItems(1, description, time))]);
+
+            setDescription("");
           }}
-          options={times.map((option) => option.time)}
-          renderInput={(params) => <TextField {...params} label="Time" />}
-        />
+        >
+          Add
+        </Button>
       </div>
-      <AssignmentBuilder handleAddBlock={handleAddBlock} />
 
       <div style={{ display: "flex", flex: 1, width: "100%" }}>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -221,7 +245,7 @@ function ClassList() {
                                   );
                                 }}
                               >
-                                delete
+                                {index}
                               </button>
                             </div>
                           </div>

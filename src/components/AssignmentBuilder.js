@@ -4,7 +4,12 @@ import Stack from "@mui/material/Stack";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
 
-function AssignmentBuilder({ handleAddBlock }) {
+function AssignmentBuilder({
+  handleAddBlock,
+  handleSetTime,
+  handleSetClass,
+  handleSetType,
+}) {
   const [description, setDescription] = useState("");
 
   const classes = [
@@ -19,6 +24,13 @@ function AssignmentBuilder({ handleAddBlock }) {
     { type: "Quiz" },
     { type: "Reading" },
     { type: "Essay" },
+  ];
+  const times = [
+    { time: 15 },
+    { time: 30 },
+    { time: 60 },
+    { time: 120 },
+    { time: 180 },
   ];
 
   return (
@@ -38,9 +50,10 @@ function AssignmentBuilder({ handleAddBlock }) {
           freeSolo
           style={{ marginRight: "16px", width: "40%" }}
           options={classes.map((option) => option.class)}
-          renderInput={(params) => (
-            <TextField {...params} label="Class (CS 103)" />
-          )}
+          renderInput={(params) => <TextField {...params} label="Class" />}
+          onChange={(event, value) => {
+            handleSetClass(value + " ");
+          }}
         />
         <Autocomplete
           size="small"
@@ -48,20 +61,23 @@ function AssignmentBuilder({ handleAddBlock }) {
           freeSolo
           style={{ width: "40%", marginRight: "16px" }}
           options={types.map((option) => option.type)}
-          renderInput={(params) => (
-            <TextField {...params} label="Type (Pset)" />
-          )}
-        />
-        <Button
-          variant="contained"
-          size="small"
-          style={{ width: "20%" }}
-          onClick={() => {
-            handleAddBlock();
+          onChange={(event, value) => {
+            handleSetType(value + " ");
           }}
-        >
-          Add
-        </Button>
+          renderInput={(params) => <TextField {...params} label="Type" />}
+        />
+        <Autocomplete
+          size="small"
+          id="activityClass"
+          freeSolo
+          defaultValue={60}
+          style={{ width: "30%" }}
+          onChange={(event, value) => {
+            handleSetTime(value);
+          }}
+          options={times.map((option) => option.time)}
+          renderInput={(params) => <TextField {...params} label="Time" />}
+        />
       </div>
     </Stack>
   );
