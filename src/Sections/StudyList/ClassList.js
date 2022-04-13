@@ -261,7 +261,6 @@ function ClassList() {
                       justifyContent: "space-between",
                       // width: "100%",
                       padding: "8px",
-                      marginTop: "8px",
                       marginBottom: "8px",
                     }}
                   >
@@ -327,6 +326,7 @@ function ClassList() {
                               <Button
                                 type="button"
                                 variant="outlined"
+                                size="small"
                                 onClick={() => {
                                   const newState = [...state];
                                   newState[ind].splice(index, 1);

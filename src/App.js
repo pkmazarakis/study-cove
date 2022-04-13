@@ -12,6 +12,7 @@ import CoveTypography from "./components/CoveTypography";
 import Clock from "react-live-clock";
 import ClassList from "./Sections/StudyList/ClassList";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import YoutubeEmbed from "./components/YoutubeEmbed";
 
 export default function App() {
   const [width, setWidth] = useState();
@@ -126,10 +127,12 @@ export default function App() {
                   alignSelf: "center",
                   width: "100%",
                   justifyContent: "center",
+                  marginBottom: "16px",
                 }}
               >
                 <Clock format="h:mm" interval={1000} ticking={true} />
               </CoveTypography>
+              <YoutubeEmbed embedId="rokGy0huYEA" />
             </Grid>
             <Grid item xs={7}>
               <ClassList />
@@ -152,10 +155,11 @@ export default function App() {
             <Clock format="h:mm" interval={1000} ticking={true} />
           </CoveTypography>
           <ClassList />
+          <YoutubeEmbed embedId="rokGy0huYEA" />
         </div>
       )}
-
-      {/* <div
+      {/* 
+      <div
         style={{ position: "absolute", left: width, top: height, zIndex: 1000 }}
       >
         <Reward
