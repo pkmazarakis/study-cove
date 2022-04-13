@@ -13,7 +13,7 @@ function AssignmentBuilder({
   const [description, setDescription] = useState("");
 
   const classes = [
-    { class: "CS 103" },
+    { class: "CS 278" },
     { class: "PHIL 193C" },
     { class: "COMM 1B" },
     { class: "BIOE 176" },
@@ -76,7 +76,7 @@ function AssignmentBuilder({
             handleSetTime(value);
           }}
           options={times.map((option) => option.time)}
-          renderInput={(params) => <TextField {...params} label="Time" />}
+          renderInput={(params) => <TextField {...params} label="Time (min)" />}
         />
       </div>
     </Stack>

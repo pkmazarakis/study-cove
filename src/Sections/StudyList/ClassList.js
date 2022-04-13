@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { alpha, styled } from "@mui/material/styles";
 
@@ -11,15 +11,26 @@ import {
   Menu,
   MenuItem,
   Autocomplete,
+  Typography,
 } from "@mui/material";
 import AssignmentBuilder from "../../components/AssignmentBuilder";
+import moment from "moment-timezone";
 
 // fake data generator
-const getItems = (count, description, time, offset = 0) => {
+const getItems = (
+  count,
+  description,
+  time,
+  currentTime,
+  afterTime,
+  offset = 0
+) => {
   return Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: `item-${k + offset}-${new Date().getTime()}`,
     content: description,
     time: time,
+    currentTime: currentTime,
+    afterTime: afterTime,
   }));
 };
 
@@ -50,7 +61,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle, time) => {
-  console.log("THIS IS THE FUCKING TIME: " + time);
+  // console.log("THIS IS THE FUCKING TIME: " + time);
   return {
     // some basic styles to make the items look a bit nicer
     display: "flex",
@@ -80,7 +91,13 @@ const getListStyle = (isDraggingOver) => ({
 });
 
 function ClassList() {
-  const [state, setState] = useState([getItems(1, "Ex: CS 103 Pset 4", 60)]);
+  const start = moment();
+  const roundTime = 30 - (start.minute() % 30);
+  const [state, setState] = useState([
+    getItems(1, "Ex: CS 103 Pset 4", 60, moment()),
+  ]);
+  // const [currentTime, setCurrentTime] = useState;
+  const [hour, setHour] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [time, setTime] = useState(60);
   const [type, setType] = useState();
@@ -88,6 +105,9 @@ function ClassList() {
 
   const [description, setDescription] = useState("");
 
+  useEffect(() => {
+    setHour(moment().add(roundTime, "minutes"));
+  }, []);
   const handleAddBlock = () => {};
   console.log(state);
 
@@ -119,6 +139,15 @@ function ClassList() {
 
   const handleClose = () => {
     setMenuOpen(false);
+  };
+
+  const handleGetTime = (index) => {
+    const time = moment();
+    for (let i = 0; i < index; i++) {
+      time.add(state[0][i].time, "minutes");
+      console.log(time);
+    }
+    return time.format("LT");
   };
 
   const handleSetTime = (holdTime) => {
@@ -175,13 +204,13 @@ function ClassList() {
           onChange={(event) => {
             setDescription(event.target.value);
           }}
-          style={{ marginRight: "16px", width: "70%", marginBottom: "16px" }}
+          style={{ marginRight: "16px", width: "80%", marginBottom: "16px" }}
         ></TextField>
         <Button
           variant="contained"
           size="small"
           style={{
-            width: "30%",
+            width: "20%",
             backgroundImage: `linear-gradient(135deg, ${alpha(
               "#FF5ACD",
               0.5
@@ -190,8 +219,23 @@ function ClassList() {
             color: "black",
           }}
           onClick={() => {
-            setState([state[0].concat(getItems(1, description, time))]);
-
+            const start = moment();
+            const remainder = 30 - (start.minute() % 30);
+            if (state.length === 0) {
+              setState([state[0].concat(getItems(1, description, time, hour))]);
+              // console.log("THIS IS THE TIME SEAOFHSDOIGFHSGIO");
+              // console.log(hour.add(time, "minutes"));
+              setHour(hour.add(time, "minutes"));
+            } else {
+              // console.log(hour);
+              setState([state[0].concat(getItems(1, description, time, hour))]);
+              // console.log("THIS IS THE TIME SEAOFHSDOIGFHSGIO");
+              // console.log(hour.add(time, "minutes"));
+              setHour(hour.add(time, "minutes"));
+            }
+            setAssignmentClass("");
+            setType("");
+            setTime(60);
             setDescription("");
           }}
         >
@@ -209,6 +253,22 @@ function ClassList() {
                   style={getListStyle(snapshot.isDraggingOver)}
                   {...provided.droppableProps}
                 >
+                  <div
+                    style={{
+                      display: "flex",
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      // width: "100%",
+                      padding: "8px",
+                      marginTop: "8px",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    <Typography>Start time</Typography>
+                    <Typography>Description</Typography>
+                    <Typography>Actions</Typography>
+                  </div>
                   {el.map((item, index) => {
                     return (
                       <Draggable
@@ -232,12 +292,41 @@ function ClassList() {
                                 display: "flex",
                                 width: "100%",
                                 justifyContent: "space-between",
+                                textAlign: "center",
+                                alignItems: "center",
+                                height: "100%",
                               }}
                             >
-                              {item.content}
+                              <div
+                                style={{
+                                  display: "inline-grid",
+                                  flexDirection: "column",
+                                  justifyContent: "space-between",
+                                  alignContent: "space-between",
+                                  height: "100%",
+                                }}
+                              >
+                                <Typography style={{ fontSize: "12px" }}>
+                                  {index === 0
+                                    ? moment().format("LT")
+                                    : handleGetTime(index)}
+                                </Typography>
+                                {/* <Typography style={{ fontSize: "12px" }}>
+                                  {hour.format("LT")}
+                                </Typography> */}
+                              </div>
+                              <Typography
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {item.content}
+                              </Typography>
                               <Button
                                 type="button"
-                                variant="outline"
+                                variant="outlined"
                                 onClick={() => {
                                   const newState = [...state];
                                   newState[ind].splice(index, 1);
